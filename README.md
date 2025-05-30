@@ -24,11 +24,12 @@ jellyfin/Emby 根据媒体库里面的海报(默认最新的 9 张,没有时间�
 
 ### 📅 更新日期
 
-- 2025-04-28
+- 2025-04-29
 
 ### ✨ 新增功能
 
-- 无
+- 增加文字阴影功能，可分别为中文和英文文本设置阴影效果
+- 文字阴影支持自定义偏移和透明度设置
 
 ### 🐞 问题修复
 
@@ -128,7 +129,11 @@ python main.py
     {
       "style_name": "style1",
       "style_ch_font": "字体名带后缀",
-      "style_eng_font": "字体名带后缀"
+      "style_eng_font": "字体名带后缀",
+      "style_ch_shadow": true,
+      "style_ch_shadow_offset": [2, 2],
+      "style_eng_shadow": true,
+      "style_eng_shadow_offset": [2, 2]
     }
   ],
   "template_mapping": [
@@ -249,22 +254,30 @@ python main.py
 ### `style_config`节点 海报样式配置
 
 ```json
-  "style_config": [
-    {
-      "style_name": "style1",
-      "style_ch_font": "字体名带后缀",
-      "style_eng_font": "字体名带后缀"
-    }
-  ],
+"style_config": [
+  {
+    "style_name": "style1",
+    "style_ch_font": "字体名带后缀",
+    "style_eng_font": "字体名带后缀",
+    "style_ch_shadow": true,
+    "style_ch_shadow_offset": [2, 2],
+    "style_eng_shadow": true,
+    "style_eng_shadow_offset": [2, 2]
+  }
+],
 ```
 
 目前只有一种海报风格所以`style_name`为`style1`
 
-| 字段名         | 说明                                       | 必填 | 默认值 |
-| -------------- | ------------------------------------------ | ---- | ------ |
-| style_name     | 海报样式名称,固定值`style1`                | 是   | style1 |
-| style_ch_font  | 海报中文字体名称,名称带后缀如 微软雅黑.ttf | 是   | -      |
-| style_eng_font | 海报英文字体名称,名称带后缀如 微软雅黑.ttf | 是   | -      |
+| 字段名                 | 说明                                         | 必填 | 默认值    |
+| ---------------------- | -------------------------------------------- | ---- | --------- |
+| style_name             | 海报样式名称,固定值`style1`                  | 是   | style1    |
+| style_ch_font          | 海报中文字体名称,名称带后缀如 微软雅黑.ttf   | 是   | -         |
+| style_eng_font         | 海报英文字体名称,名称带后缀如 微软雅黑.ttf   | 是   | -         |
+| style_ch_shadow        | 是否启用中文文字阴影                         | 否   | false     |
+| style_ch_shadow_offset | 中文文字阴影偏移量，格式为 [x, y]            | 否   | [2, 2]    |
+| style_eng_shadow       | 是否启用英文文字阴影                         | 否   | false     |
+| style_eng_shadow_offset| 英文文字阴影偏移量，格式为 [x, y]            | 否   | [2, 2]    |
 
 ### `template_mapping` 媒体库模板映射
 
@@ -321,14 +334,11 @@ python main.py
 
 ### 📅 更新日期
 
+- 2025-04-29
+  - 增加文字阴影功能，可分别为中文和英文文本设置阴影效果
+  - 文字阴影支持自定义偏移和透明度设置
+
 - 2025-04-27
-
-### ✨ 新增功能
-
-- 支持媒体海报根据不同规则排序,详情查看`template_mapping 节点媒体库模板映射`
-- 支持自定义字体,详情查看`style_config 节点字体映射`
-- 优化媒体库海报背景图，提升整体明亮度,调整背景图生成逻辑,详见`重点提醒`
-
-### 🐞 问题修复
-
-- 无
+  - 支持媒体海报根据不同规则排序,详情查看`template_mapping 节点媒体库模板映射`
+  - 支持自定义字体,详情查看`style_config 节点字体映射`
+  - 优化媒体库海报背景图，提升整体明亮度,调整背景图生成逻辑,详见`重点提醒`

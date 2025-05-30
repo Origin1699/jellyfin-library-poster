@@ -51,18 +51,23 @@ def add_shadow(img, offset=(5, 5), shadow_color=(0, 0, 0, 100), blur_radius=3):
 
 
 def draw_text_on_image(
-    image, text, position, font_path,default_font_path, font_size, fill_color=(255, 255, 255, 255)
+    image, text, position, font_path, default_font_path, font_size, fill_color=(255, 255, 255, 255), 
+    shadow_enabled=False, shadow_color=(0, 0, 0, 180), shadow_offset=(2, 2)
 ):
     """
-    在图像上绘制文字
+    在图像上绘制文字，可选添加文字阴影
 
     参数:
         image: PIL.Image对象
         text: 要绘制的文字
         position: 文字位置 (x, y)
         font_path: 字体文件路径
+        default_font_path: 默认字体文件路径
         font_size: 字体大小
         fill_color: 文字颜色，RGBA格式
+        shadow_enabled: 是否启用文字阴影
+        shadow_color: 阴影颜色，RGBA格式
+        shadow_offset: 阴影偏移量，(x, y)格式
 
     返回:
         添加了文字的图像
@@ -75,7 +80,13 @@ def draw_text_on_image(
         logger.warning(f"自定义字体不存在:{font_path}，使用默认字体")
         font_path = os.path.join(config.CURRENT_DIR, "font", default_font_path)
     font = ImageFont.truetype(font_path, font_size)
-    # 绘制文字
+    
+    # 如果启用阴影，先绘制阴影文字
+    if shadow_enabled:
+        shadow_position = (position[0] + shadow_offset[0], position[1] + shadow_offset[1])
+        draw.text(shadow_position, text, font=font, fill=shadow_color)
+    
+    # 绘制正常文字
     draw.text(position, text, font=font, fill=fill_color)
 
     return img_copy
@@ -90,18 +101,25 @@ def draw_multiline_text_on_image(
     font_size,
     line_spacing=10,
     fill_color=(255, 255, 255, 255),
+    shadow_enabled=False, 
+    shadow_color=(0, 0, 0, 180), 
+    shadow_offset=(2, 2)
 ):
     """
-    在图像上绘制多行文字，根据空格自动换行
+    在图像上绘制多行文字，根据空格自动换行，可选添加文字阴影
 
     参数:
         image: PIL.Image对象
         text: 要绘制的文字
         position: 第一行文字位置 (x, y)
         font_path: 字体文件路径
+        default_font_path: 默认字体文件路径
         font_size: 字体大小
         line_spacing: 行间距
         fill_color: 文字颜色，RGBA格式
+        shadow_enabled: 是否启用文字阴影
+        shadow_color: 阴影颜色，RGBA格式
+        shadow_offset: 阴影偏移量，(x, y)格式
 
     返回:
         添加了文字的图像和行数
@@ -120,6 +138,9 @@ def draw_multiline_text_on_image(
 
     # 如果只有一行，直接绘制并返回
     if len(lines) <= 1:
+        if shadow_enabled:
+            shadow_position = (position[0] + shadow_offset[0], position[1] + shadow_offset[1])
+            draw.text(shadow_position, text, font=font, fill=shadow_color)
         draw.text(position, text, font=font, fill=fill_color)
         return img_copy, 1
 
@@ -127,6 +148,14 @@ def draw_multiline_text_on_image(
     x, y = position
     for i, line in enumerate(lines):
         current_y = y + i * (font_size + line_spacing)
+        
+        # 如果启用阴影，先绘制阴影文字
+        if shadow_enabled:
+            shadow_x = x + shadow_offset[0]
+            shadow_y = current_y + shadow_offset[1]
+            draw.text((shadow_x, shadow_y), line, font=font, fill=shadow_color)
+        
+        # 绘制正常文字
         draw.text((x, current_y), line, font=font, fill=fill_color)
 
     # 返回图像和行数
@@ -708,10 +737,21 @@ def gen_poster_workflow(name):
             (style for style in config.STYLE_CONFIGS if style.get("style_name") == style_name),
             None
         )
-        # 添加中文名文字
+        
+        # 获取文字阴影设置
+        ch_shadow_enabled = style_config.get("style_ch_shadow", False) if style_config else False
+        eng_shadow_enabled = style_config.get("style_eng_shadow", False) if style_config else False
+        
+        # 阴影颜色和偏移量设置
+        shadow_color = (0, 0, 0, 180)  # 默认黑色阴影，半透明
+        ch_shadow_offset = style_config.get("style_ch_shadow_offset", (2, 2)) if style_config else (2, 2)
+        eng_shadow_offset = style_config.get("style_eng_shadow_offset", (2, 2)) if style_config else (2, 2)
+
+        # 添加中文名文字，可选添加阴影
         fangzheng_font_path = os.path.join("myfont", style_config.get("style_ch_font"))
         result = draw_text_on_image(
-            result, library_ch_name, (73.32, 427.34), fangzheng_font_path, "ch.ttf", 163
+            result, library_ch_name, (73.32, 427.34), fangzheng_font_path, "ch.ttf", 163,
+            shadow_enabled=ch_shadow_enabled, shadow_offset=ch_shadow_offset
         )
 
         # 如果有英文名，才添加英文名文字
@@ -744,8 +784,7 @@ def gen_poster_workflow(name):
                 f"[{config.JELLYFIN_CONFIG['SERVER_NAME']}][{name}] 使用字体大小: {font_size:.2f}"
             )
 
-
-            # 使用多行文本绘制
+            # 使用多行文本绘制，可选添加阴影
             melete_font_path = os.path.join("myfont", style_config.get("style_eng_font"))
             result, line_count = draw_multiline_text_on_image(
                 result,
@@ -754,6 +793,8 @@ def gen_poster_workflow(name):
                 melete_font_path, "en.otf",
                 int(font_size),
                 line_spacing,
+                shadow_enabled=eng_shadow_enabled,
+                shadow_offset=eng_shadow_offset
             )
 
             # 根据行数调整色块高度
