@@ -21,7 +21,11 @@
     {
       "style_name": "style1",
       "style_ch_font": "字体名带后缀",
-      "style_eng_font": "字体名带后缀"
+      "style_eng_font": "字体名带后缀",
+      "style_ch_shadow": true,
+      "style_ch_shadow_offset": [2, 2],
+      "style_eng_shadow": true,
+      "style_eng_shadow_offset": [2, 2]
     }
   ],
   "template_mapping": [
