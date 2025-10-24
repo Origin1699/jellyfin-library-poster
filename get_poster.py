@@ -52,8 +52,9 @@ def get_items(parent_id, library_name=None):
     logger.info(
         f"[{config.JELLYFIN_CONFIG['SERVER_NAME']}][{library_name}] 使用配置的排序方式: {sort_by}"
     )
-    # 修改为获取用户的媒体库列表
-    url = f"{config.JELLYFIN_CONFIG['BASE_URL']}/Users/{config.JELLYFIN_CONFIG['USER_ID']}/Items/?ParentId={parent_id}&Recursive=true&SortBy={sort_by}&SortOrder=Descending&IncludeItemTypes=Movie,Series,Audio,Music,Game,Book,MusicVideo,BoxSet"
+    # 修改为获取用户的媒体库列表，添加Limit参数限制返回数量以避免timeout
+    # 使用50作为限制，因为只需要9张海报，50个项目足够过滤和选择
+    url = f"{config.JELLYFIN_CONFIG['BASE_URL']}/Users/{config.JELLYFIN_CONFIG['USER_ID']}/Items/?ParentId={parent_id}&Recursive=true&SortBy={sort_by}&SortOrder=Descending&IncludeItemTypes=Movie,Series,Audio,Music,Game,Book,MusicVideo,BoxSet&Limit=50"
     print(f"{url}")
 
     headers = {
