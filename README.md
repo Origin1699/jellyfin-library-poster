@@ -1,11 +1,11 @@
 # jellyfin-library-poster
 
-![GitHub Repo stars](https://img.shields.io/github/stars/HappyQuQu/jellyfin-library-poster?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/HappyQuQu/jellyfin-library-poster?style=for-the-badge)
-![GitHub contributors](https://img.shields.io/github/contributors/HappyQuQu/jellyfin-library-poster?style=for-the-badge)
-![GitHub repo size](https://img.shields.io/github/repo-size/HappyQuQu/jellyfin-library-poster?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/HappyQuQu/jellyfin-library-poster?style=for-the-badge)
-![Docker Pulls](https://img.shields.io/docker/pulls/evanqu/jellyfin-library-poster?style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/Origin1699/jellyfin-library-poster?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/Origin1699/jellyfin-library-poster?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/Origin1699/jellyfin-library-poster?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/Origin1699/jellyfin-library-poster?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/Origin1699/jellyfin-library-poster?style=for-the-badge)
+![Docker Pulls](https://img.shields.io/docker/pulls/origin1699/jellyfin-library-poster?style=for-the-badge)
 
 jellyfin/Emby 根据媒体库里面的海报(默认最新的 9 张,没有时间就随机),定时生成媒体库封面并且上传更新
 
@@ -36,7 +36,7 @@ jellyfin/Emby 根据媒体库里面的海报(默认最新的 9 张,没有时间�
 
 ## 使用说明
 
-[Docker Hub](https://hub.docker.com/r/evanqu/jellyfin-library-poster)
+[Docker Hub](https://hub.docker.com/r/origin1699/jellyfin-library-poster)
 
 ### docker 运行
 
@@ -48,7 +48,7 @@ docker run \
   -v "./output:/app/output" \
   -v "./output:/app/logs" \
   -v "./myfont:/app/myfont"
-  evanqu/jellyfin-library-poster:latest
+  origin1699/jellyfin-library-poster:latest
 ```
 
 `/app/config` 存放 `config.json`,新建一个 `config.json` 文件,然后复制参考示例得内容,然后修改成自己的配置保存到这个 `config.json` 中
@@ -68,7 +68,7 @@ docker run \
 ```yaml
 services:
   jellyfin-library-poster:
-    image: evanqu/jellyfin-library-poster:latest
+    image: origin1699/jellyfin-library-poster:latest
     container_name: jellyfin-library-poster
     volumes:
       - ./config:/app/config
@@ -356,16 +356,16 @@ python main.py
 
 ### 运行日志
 
-![](https://github.com/HappyQuQu/jellyfin-library-poster/raw/main/screenshot/1.png)
+![](https://github.com/Origin1699/jellyfin-library-poster/raw/main/screenshot/1.png)
 
 ### 海报示例
 
-![](https://github.com/HappyQuQu/jellyfin-library-poster/raw/main/screenshot/Anime.png)
-![](https://github.com/HappyQuQu/jellyfin-library-poster/raw/main/screenshot/ClassicTV.png)
-![](https://github.com/HappyQuQu/jellyfin-library-poster/raw/main/screenshot/Documentary.png)
-![](https://github.com/HappyQuQu/jellyfin-library-poster/raw/main/screenshot/HotMovie.png)
-![](https://github.com/HappyQuQu/jellyfin-library-poster/raw/main/screenshot/HotTV.png)
-![](https://github.com/HappyQuQu/jellyfin-library-poster/raw/main/screenshot/Movie.png)
+![](https://github.com/Origin1699/jellyfin-library-poster/raw/main/screenshot/Anime.png)
+![](https://github.com/Origin1699/jellyfin-library-poster/raw/main/screenshot/ClassicTV.png)
+![](https://github.com/Origin1699/jellyfin-library-poster/raw/main/screenshot/Documentary.png)
+![](https://github.com/Origin1699/jellyfin-library-poster/raw/main/screenshot/HotMovie.png)
+![](https://github.com/Origin1699/jellyfin-library-poster/raw/main/screenshot/HotTV.png)
+![](https://github.com/Origin1699/jellyfin-library-poster/raw/main/screenshot/Movie.png)
 
 ## 历史更新
 
